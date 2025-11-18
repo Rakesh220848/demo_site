@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Happy Princess Day — Disha</title>
+<style>
+  :root{
+    --pink1:#fff0f6; --pink2:#fff7fb; --accent:#ff6fa6; --deep:#d63384;
+    --card-bg: #ffffffcc;
+  }
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:radial-gradient(circle at 10% 10%, #fff4fb 0%, #fffbfe 22%, #fff 50%), linear-gradient(180deg,var(--pink1),var(--pink2)); color:#222}
+  .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:30px;box-sizing:border-box}
+  .card{
+    width:92%;max-width:640px;border-radius:22px;padding:30px 28px 42px;background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
+    box-shadow: 0 20px 50px rgba(214,51,132,0.12), inset 0 1px 0 rgba(255,255,255,0.6);
+    position:relative; overflow:visible; text-align:center;
+    border:1px solid rgba(255,214,230,0.6);
+  }
+
+  .title{font-size:24px;font-weight:800;color:var(--deep);margin:0 0 8px;letter-spacing:0.2px}
+  .subtitle{font-size:13px;color:#6b7280;margin:0 0 18px}
+
+  .avatar-wrap{position:relative;margin:8px auto 20px;width:140px;height:140px;border-radius:999px;background:radial-gradient(circle at 30% 30%, #fff8fc, #ffeef6);box-shadow:0 10px 30px rgba(214,51,132,0.08);border:4px solid #ffd6e6;display:flex;align-items:center;justify-content:center}
+  .avatar-emoji{font-size:48px;transform-origin:center;animation:pop 1200ms cubic-bezier(.2,.9,.2,1) both}
+  @keyframes pop{0%{transform:scale(.8);opacity:0}60%{transform:scale(1.06);opacity:1}100%{transform:scale(1)}}
+
+  .crown{
+    position:absolute; right:22px; top:-22px; width:74px; height:74px; transform-origin:center;
+    animation:floatCrown 4200ms ease-in-out infinite; filter:drop-shadow(0 10px 16px rgba(214,51,132,0.12));
+  }
+  @keyframes floatCrown{0%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-10px) rotate(6deg)}100%{transform:translateY(0) rotate(-6deg)}}
+
+  .message-box{margin-top:8px;padding:16px 18px;border-radius:14px;background:linear-gradient(180deg, rgba(255,246,250,0.8), rgba(255,255,255,0.6));border:1px solid rgba(255,214,230,0.6);min-height:120px;position:relative;overflow:hidden}
+  .typed{font-size:18px;color:#374151;line-height:1.45;text-align:center;white-space:pre-wrap; font-family: 'Segoe Script', 'Brush Script MT', 'Lucida Handwriting', cursive;}
+  .cursor{display:inline-block;width:3px;height:1.05em;background:var(--deep);margin-left:6px;vertical-align:bottom;animation:blink 900ms steps(2,end) infinite}
+  @keyframes blink{0%{opacity:1}50%{opacity:0}100%{opacity:1}}
+
+  .actions{margin-top:16px;display:flex;gap:12px;justify-content:center;align-items:center}
+  .btn{
+    padding:10px 16px;border-radius:999px;border:0;background:linear-gradient(90deg,#ff86b6,#ff5aa1);color:white;font-weight:700;text-decoration:none;box-shadow:0 8px 20px rgba(255,90,161,0.14);cursor:pointer;
+  }
+  .muted{background:transparent;color:#6b7280;font-weight:600;border-radius:999px;padding:8px 12px;border:1px solid rgba(107,114,128,0.08);cursor:pointer}
+
+  .confetti{position:absolute;inset:0;pointer-events:none;z-index:6;overflow:visible}
+  .hearts{position:absolute;left:12px;bottom:-10px;z-index:4;pointer-events:none;width:120px;height:120px}
+
+  .small{font-size:12px;color:#9ca3af;margin-top:10px}
+
+  @media (max-width:460px){
+    .avatar-wrap{width:120px;height:120px}
+    .title{font-size:20px}
+    .message-box{min-height:140px}
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="main" aria-live="polite">
+      <svg class="crown" viewBox="0 0 64 64" fill="none" aria-hidden>
+        <path d="M4 52h56v2H4z" fill="#FFD166"/>
+        <path d="M6 50c6-10 6-24 14-24 4 0 6 8 10 8s6-8 10-8c8 0 8 14 14 24H6z" fill="#FFCCCB"/>
+        <circle cx="12" cy="22" r="3" fill="#fff7" />
+      </svg>
+
+      <h1 class="title">👑 Happy Princess Day, Disha  💗!</h1>
+      <div class="subtitle">A special little surprise made just for you ✨</div>
+
+      <div class="avatar-wrap" aria-hidden>
+        <div class="avatar-emoji">👸</div>
+      </div>
+
+      <div class="message-box" id="messageBox">
+        <div class="typed" id="typed"></div><span class="cursor" id="cursor"></span>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="openBtn">Open Surprise ✨</button>
+        <button class="muted" id="replayBtn">Replay</button>
+      </div>
+
+      <div class="small">Tip: Tap "Open Surprise" for confetti & little animations 🎉</div>
+
+      <svg class="confetti" id="confettiLayer" viewBox="0 0 800 600" preserveAspectRatio="none" aria-hidden></svg>
+      <svg class="hearts" id="heartsLayer" viewBox="0 0 120 120" aria-hidden></svg>
+    </div>
+  </div>
+
+<script>
+const messages = [
+  "𝒫𝓇𝒾𝓉𝒾 — 𝓂𝓎 𝓅𝓇𝑒𝒸𝒾𝓸𝓊𝓈 𝓁𝒾𝓉𝓉𝓁𝑒 𝓅𝓇𝒾𝓃𝒸𝑒𝓈𝓈,",
+  "𝒴𝑜𝓊𝓇 𝓁𝒶𝓊𝑔𝒽𝓉𝑒𝓇 𝒽𝒶𝓈 𝓉𝒽𝒶𝓉 𝑔𝑒𝓃𝓉𝓁𝑒, 𝓂𝒶𝑔𝒾𝒸𝒶𝓁 𝓈𝓅𝒶𝓇𝓀 𝓉𝒽𝒶𝓉 𝓁𝒾𝑔𝒽𝓉𝓈 𝓊𝓅 𝑒𝓋𝑒𝓃 𝓉𝒽𝑒 𝓆𝓊𝒾𝑒𝓉𝑒𝓈𝓉 𝑜𝒻 𝒹𝒶𝓎𝓈.\n𝒴𝑜𝓊𝓇 𝓈𝓂𝒾𝓁𝑒 𝒾𝓈 𝒶 𝓈𝑜𝒻𝓉, 𝑤𝒶𝓇𝓂 𝑔𝒾𝒻𝓉 𝓉𝒽𝒶𝓉 𝓉𝑜𝓊𝒸𝒽𝑒𝓈 𝑒𝓋𝑒𝓇𝓎 𝒽𝑒𝒶𝓇𝓉 𝓎𝑜𝓊 𝓅𝒶𝓈𝓈.",
+  "𝒪𝓃 𝓉𝒽𝒾𝓈 𝒫𝓇𝒾𝓃𝒸𝑒𝓈𝓈 𝒟𝒶𝓎, 𝓂𝒶𝓎 𝓎𝑜𝓊𝓇 𝓌𝑜𝓇𝓁𝒹 𝓈𝒽𝒾𝓃𝑒 𝓌𝒾𝓉𝒽 𝒿𝑜𝓎, 𝓉𝑒𝓃𝒹𝑒𝓇𝓃𝑒𝓈𝓈, 𝒶𝓃𝒹 𝑒𝓋𝑒𝓇𝓎 𝒹𝒶𝒾𝓃𝓉𝓎 𝓁𝒾𝓉𝓉𝓁𝑒 𝓂𝑜𝓂𝑒𝓃𝓉 𝓎𝑜𝓊𝓇 𝒽𝑒𝒶𝓇𝓉 𝓈𝑒𝒸𝓇𝑒𝓉𝓁𝓎 𝒹𝑒𝓈𝓈𝓇𝑒𝓈.",
+  "𝑀𝒶𝓎 𝓎𝑜𝓊𝓇 𝓁𝒾𝒻𝑒 𝒶𝓁𝓌𝒶𝓎𝓈 𝒷𝑒 𝒻𝒾𝓁𝓁𝑒𝒹 𝓌𝒾𝓉𝒽 𝓁𝒾𝑔𝒽𝓉 𝑔𝒾𝑔𝑔𝑙𝑒𝓈, 𝓈𝑜𝒻𝓉 𝓈𝓊𝓃𝓈𝒽𝒾𝓃𝑒, 𝓌𝒶𝓇𝓂 𝒽𝓊𝑔𝓈, 𝒶𝓃𝒹 𝓂𝒾𝓁𝓁𝒾𝑜𝓃𝓈 𝑜𝒻 𝓇𝑒𝒶𝓈𝑜𝓃𝓈 𝓉𝑜 𝓈𝓂𝒾𝓁𝑒.",
+  "𝒴𝑜𝓊 𝒹𝑒𝓈𝑒𝓇𝓋𝑒 𝒶𝓁𝓁 𝓉𝒽𝑒 𝓈𝓅𝒶𝓇𝓀𝓁𝑒, 𝒶𝓁𝓁 𝓉𝒽𝑒 𝓁𝑜𝓋𝑒, 𝒶𝓃𝒹 𝑒𝓋𝑒𝓇𝓎 𝓁𝒾𝓉𝓉𝓁𝑒 𝓌𝑜𝓃𝒹𝑒𝓇 𝓉𝒽𝒾𝓈 𝓌𝑜𝓇𝓁𝒹 𝒽𝒶𝓈 𝓉𝑜 𝑜𝒻𝒻𝑒𝓇.",
+  "𝐻𝒶𝓅𝓅𝓎 𝒫𝓇𝒾𝓃𝒸𝑒𝓈𝓈 𝒟𝒶𝓎, 𝓂𝓎 𝒶𝒹𝑜𝓇𝒶𝒷𝓁𝑒 𝒫𝓇𝒾𝓉𝒾. 𝒴𝑜𝓊 𝒶𝓇𝑒 𝓁𝑜𝓋𝑒𝒹 𝒻𝒶𝓇 𝓂𝑜𝓇𝑒 𝓉𝒽𝒶𝓃 𝓎𝑜𝓊 𝓀𝓃𝑜𝓌.",
+  "𝐼 𝓁𝑜𝓋𝑒 𝓎𝑜𝓊 𝓂𝑜𝓇𝑒 𝓉𝒽𝒶𝓃 𝓌𝑜𝓇𝒹𝓈, 𝒻𝑜𝓇𝑒𝓋𝑒𝓇 𝒶𝓃𝒹 𝒶𝓁𝓌𝒶𝓎𝓈."
+];
+
+const TYPING_SPEED = 36;
+const PAUSE_BETWEEN = 1000;
+
+const typedEl = document.getElementById('typed');
+const cursorEl = document.getElementById('cursor');
+const openBtn = document.getElementById('openBtn');
+const replayBtn = document.getElementById('replayBtn');
+const confettiSVG = document.getElementById('confettiLayer');
+const heartsSVG = document.getElementById('heartsLayer');
+
+let isPlaying = false;
+
+async function typeMessages(list){
+  typedEl.textContent = "";
+  cursorEl.style.display = "inline-block";
+  for(let i=0;i<list.length;i++){
+    await typeLine(list[i]);
+    await wait(PAUSE_BETWEEN);
+    if(i < list.length - 1) {
+      typedEl.textContent += "\n\n";
+    }
+  }
+  cursorEl.style.display = "none";
+  burstConfetti(28);
+  spawnHearts();
+}
+
+function typeLine(line){
+  return new Promise(resolve=>{
+    let idx = 0;
+    const loop = () => {
+      if(idx <= line.length - 1){
+        typedEl.textContent += line[idx++];
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        setTimeout(loop, TYPING_SPEED);
+      } else resolve();
+    };
+    loop();
+  });
+}
+
+function wait(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+function burstConfetti(count=18){
+  for(let i=0;i<count;i++){
+    const x = Math.random()*800;
+    const y = -40 - Math.random()*120;
+    const size = Math.random()*10 + 6;
+    const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    rect.setAttribute('x', x);
+    rect.setAttribute('y', y);
+    rect.setAttribute('width', size);
+    rect.setAttribute('height', Math.max(4, size*0.6));
+    rect.setAttribute('rx', 2);
+    const palette = ['#FF86B6','#FFD166','#A78BFA','#60A5FA','#FFBACD'];
+    rect.setAttribute('fill', palette[Math.floor(Math.random()*palette.length)]);
+    rect.style.transformOrigin = `${x+size/2}px ${y+size/2}px`;
+    rect.style.transition = `transform ${2.6+Math.random()}s cubic-bezier(.2,.8,.2,1), opacity ${2.6+Math.random()}s linear`;
+    confettiSVG.appendChild(rect);
+    setTimeout(()=>{ rect.style.transform = `translateY(${520+Math.random()*60}px) rotate(${Math.random()*720-120}deg) scale(${0.95+Math.random()*0.4})`; rect.style.opacity='0' }, 50 + i*60);
+    setTimeout(()=>{ try{ confettiSVG.removeChild(rect) }catch(e){} }, 3800 + i*10);
+  }
+}
+
+function spawnHearts(){
+  for(let i=0;i<8;i++){
+    const heart = document.createElementNS('http://www.w3.org/2000/svg','path');
+    const s = 6 + Math.random()*8;
+    const x = Math.random()*100;
+    const y = 100 + Math.random()*20;
+    heart.setAttribute('d', `M ${x} ${y} c -5 -10 -20 -15 -20 -28 a 12 12 0 0 1 20 -8 12 12 0 0 1 20 8 c 0 13 -15 18 -20 28 z`);
+    heart.setAttribute('fill', ['#ff9ccf','#ffd1a9','#ffd6ea'][Math.floor(Math.random()*3)]);
+    heart.style.opacity = 0.95;
+    heart.style.transformOrigin = `${x}px ${y}px`;
+    heart.style.transition = `transform ${6 + Math.random()*4}s linear, opacity ${6 + Math.random()*4}s linear`;
+    heartsSVG.appendChild(heart);
+    setTimeout(()=>{ heart.style.transform = `translateY(-160px) scale(${0.9+Math.random()*0.6}) rotate(${Math.random()*40-20}deg)`; heart.style.opacity='0' }, 80 + i*240);
+    setTimeout(()=>{ try{ heartsSVG.removeChild(heart) }catch(e){} }, 7000 + i*100);
+  }
+}
+
+function startSequence(){
+  if(isPlaying) return;
+  isPlaying = true;
+  typedEl.textContent = "";
+  cursorEl.style.display = 'inline-block';
+  spawnHearts();
+  burstConfetti(14);
+  typeMessages(messages).then(()=>{ isPlaying = false; });
+}
+
+openBtn.addEventListener('click', ()=>{
+  burstConfetti(28);
+  spawnHearts();
+  const crown = document.querySelector('.crown');
+  crown.animate([{ transform: 'translateY(0) scale(1)' }, { transform: 'translateY(-8px) scale(1.06)' }, { transform: 'translateY(0) scale(1)' }], { duration: 700, easing: 'ease-out' });
+});
+replayBtn.addEventListener('click', ()=>{
+  if(isPlaying) return;
+  startSequence();
+});
+
+window.addEventListener('load', ()=>{ setTimeout(()=>{ spawnHearts(); startSequence(); }, 700) });
+</script>
+</body>
+</html
